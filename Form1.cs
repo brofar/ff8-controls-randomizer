@@ -115,9 +115,7 @@ namespace Controls_Randomizer
         private async void DetectGame()
         {
             // Find the FF8 process.
-            Console.WriteLine("Checking for game...");
             Process ff8Game = await Task.Run(FindGame);
-            Console.WriteLine("Game found.");
 
             // Get the language from the process name (i.e. remove "FF8_" from the name)
             GameVersion = ff8Game.ProcessName.Substring(4);
@@ -148,6 +146,9 @@ namespace Controls_Randomizer
                 .Where(x => (x.ProcessName.StartsWith("FF8_", StringComparison.OrdinalIgnoreCase))
                             && !(x.ProcessName.Equals("FF8_Launcher", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
+
+                // Sleep for 1 sec before checking again to limit CPU usage.
+                System.Threading.Thread.Sleep(1000);
             } while (processes.Count == 0);
 
             return processes[0];

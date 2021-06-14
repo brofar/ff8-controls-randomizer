@@ -139,6 +139,8 @@ namespace Controls_Randomizer
             this.MinimumSize = new System.Drawing.Size(321, 174);
             this.Name = "formMain";
             this.Text = "FF8 Controls Randomizer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnApplicationExit);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnApplicationExit);
             this.Load += new System.EventHandler(this.formMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numTimer)).EndInit();
             this.ResumeLayout(false);
