@@ -51,7 +51,7 @@ namespace Controls_Randomizer
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(281, 13);
             this.lblVersion.TabIndex = 1;
-            this.lblVersion.Text = "FF8 Controls Randomizer EN/FR 1.01";
+            this.lblVersion.Text = "FF8 Controls Randomizer EN/FR 1.02";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // checkFullRandom
@@ -60,7 +60,7 @@ namespace Controls_Randomizer
             this.checkFullRandom.Location = new System.Drawing.Point(12, 25);
             this.checkFullRandom.Name = "checkFullRandom";
             this.checkFullRandom.Size = new System.Drawing.Size(85, 17);
-            this.checkFullRandom.TabIndex = 3;
+            this.checkFullRandom.TabIndex = 2;
             this.checkFullRandom.Text = "Full Random";
             this.checkFullRandom.UseVisualStyleBackColor = true;
             // 
@@ -70,7 +70,7 @@ namespace Controls_Randomizer
             this.btnStart.Location = new System.Drawing.Point(12, 80);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(281, 25);
-            this.btnStart.TabIndex = 5;
+            this.btnStart.TabIndex = 8;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -108,7 +108,7 @@ namespace Controls_Randomizer
             0});
             this.numTimer.Name = "numTimer";
             this.numTimer.Size = new System.Drawing.Size(43, 20);
-            this.numTimer.TabIndex = 7;
+            this.numTimer.TabIndex = 3;
             this.numTimer.Value = new decimal(new int[] {
             1,
             0,
@@ -122,7 +122,7 @@ namespace Controls_Randomizer
             this.radioTimer.Location = new System.Drawing.Point(90, 42);
             this.radioTimer.Name = "radioTimer";
             this.radioTimer.Size = new System.Drawing.Size(51, 17);
-            this.radioTimer.TabIndex = 9;
+            this.radioTimer.TabIndex = 4;
             this.radioTimer.TabStop = true;
             this.radioTimer.Text = "Timer";
             this.radioTimer.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@ namespace Controls_Randomizer
             this.radioMap.Location = new System.Drawing.Point(147, 42);
             this.radioMap.Name = "radioMap";
             this.radioMap.Size = new System.Drawing.Size(86, 17);
-            this.radioMap.TabIndex = 10;
+            this.radioMap.TabIndex = 5;
             this.radioMap.Text = "Map Change";
             this.radioMap.UseVisualStyleBackColor = true;
             this.radioMap.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
@@ -154,7 +154,7 @@ namespace Controls_Randomizer
             this.checkRngSound.Location = new System.Drawing.Point(12, 61);
             this.checkRngSound.Name = "checkRngSound";
             this.checkRngSound.Size = new System.Drawing.Size(109, 17);
-            this.checkRngSound.TabIndex = 12;
+            this.checkRngSound.TabIndex = 6;
             this.checkRngSound.Text = "Audio Notification";
             this.checkRngSound.UseVisualStyleBackColor = true;
             this.checkRngSound.CheckedChanged += new System.EventHandler(this.checkRngSound_CheckedChanged);
@@ -165,7 +165,7 @@ namespace Controls_Randomizer
             this.checkKaivel.Location = new System.Drawing.Point(124, 61);
             this.checkKaivel.Name = "checkKaivel";
             this.checkKaivel.Size = new System.Drawing.Size(55, 17);
-            this.checkKaivel.TabIndex = 13;
+            this.checkKaivel.TabIndex = 7;
             this.checkKaivel.Text = "Kaivel";
             this.checkKaivel.UseVisualStyleBackColor = true;
             this.checkKaivel.Visible = false;
