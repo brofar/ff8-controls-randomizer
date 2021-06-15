@@ -29,6 +29,7 @@ namespace Controls_Randomizer
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formMain));
             this.lblVersion = new System.Windows.Forms.Label();
             this.checkFullRandom = new System.Windows.Forms.CheckBox();
             this.btnStart = new System.Windows.Forms.Button();
@@ -184,6 +185,7 @@ namespace Controls_Randomizer
             this.Controls.Add(this.checkFullRandom);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblVersion);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(321, 174);
             this.MinimumSize = new System.Drawing.Size(321, 174);
