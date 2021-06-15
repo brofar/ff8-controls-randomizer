@@ -20,6 +20,7 @@ namespace Controls_Randomizer
         static List<int> allControls = new List<int>();
         static Dictionary<int,int> defaults = new Dictionary<int, int>();
         static int mapId;
+        static string soundPath;
 
 
         static Dictionary<string, int> mapIdOffset = new Dictionary<string, int>
@@ -348,7 +349,15 @@ namespace Controls_Randomizer
                 }
                 else
                 {
-                    System.Media.SystemSounds.Asterisk.Play();
+                    try
+                    {
+                        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(soundPath);
+                        snd.Play();                        
+                    }
+                    catch
+                    {
+                        System.Media.SystemSounds.Asterisk.Play();
+                    }
                 }
             }
         }
@@ -401,6 +410,14 @@ namespace Controls_Randomizer
         {
             if(checkRngSound.Checked)
             {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = "Audio Files (.wav)|*.wav";
+
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    soundPath = dialog.FileName;
+                }
                 checkKaivel.Visible = true;
             }
             else
