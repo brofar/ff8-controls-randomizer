@@ -115,27 +115,38 @@ namespace Controls_Randomizer
         }
         private async void DetectGame()
         {
-            // Find the FF8 process.
-            Process ff8Game = await Task.Run(FindGame);
+            try
+            {
 
-            // Get the language from the process name (i.e. remove "FF8_" from the name)
-            GameVersion = ff8Game.ProcessName.Substring(4);
-            GameBaseAddress = ff8Game.MainModule.BaseAddress;
+                // Find the FF8 process.
+                Process ff8Game = await Task.Run(FindGame);
 
-            // Add event handler for exited process
-            ff8Game.EnableRaisingEvents = true;
-            ff8Game.Exited += new EventHandler(myprc_Exited);
+                // Get the language from the process name (i.e. remove "FF8_" from the name)
+                GameVersion = ff8Game.ProcessName.Substring(4);
+                GameBaseAddress = ff8Game.MainModule.BaseAddress;
 
-            FF8Process = ff8Game;
+                // Add event handler for exited process
+                ff8Game.EnableRaisingEvents = true;
+                ff8Game.Exited += new EventHandler(myprc_Exited);
 
-            // Set our combined list
-            allControls = buttons[GameVersion].Concat(directions[GameVersion]).ToList();
+                FF8Process = ff8Game;
 
-            // Update status
-            InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = GameVersion + " - Waiting for start button.");
+                // Set our combined list
+                allControls = buttons[GameVersion].Concat(directions[GameVersion]).ToList();
 
-            // Make the start button clickable
-            InvokeControlAction<Button>(btnStart, btn => btn.Enabled = true);
+                // Update status
+                InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = GameVersion + " - Waiting for start button.");
+
+                // Make the start button clickable
+                InvokeControlAction<Button>(btnStart, btn => btn.Enabled = true);
+            }
+            catch
+            {
+                // Something happened and we couldn't find the game.
+                // Crashes on Kaivel's PC
+                System.Threading.Thread.Sleep(1000);
+                DetectGame();
+            }
         }
 
         private Process FindGame()
@@ -149,6 +160,7 @@ namespace Controls_Randomizer
                 .ToList();
 
                 // Sleep for 1 sec before checking again to limit CPU usage.
+                // Jester
                 System.Threading.Thread.Sleep(1000);
             } while (processes.Count == 0);
 

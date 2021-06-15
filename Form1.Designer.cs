@@ -51,7 +51,7 @@ namespace Controls_Randomizer
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(281, 13);
             this.lblVersion.TabIndex = 1;
-            this.lblVersion.Text = "FF8 Controls Randomizer EN/FR 1.02";
+            this.lblVersion.Text = "FF8 Controls Randomizer EN/FR 1.03";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // checkFullRandom
