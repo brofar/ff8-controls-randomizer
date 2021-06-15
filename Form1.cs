@@ -16,11 +16,11 @@ namespace Controls_Randomizer
         static Process FF8Process;
         static string GameVersion;
         static IntPtr GameBaseAddress;
-        static Timer t;
-        static List<int> allControls = new List<int>();
-        static Dictionary<int,int> defaults = new Dictionary<int, int>();
-        static int mapId;
-        static string soundPath;
+        static Timer T;
+        static List<int> AllControls = new List<int>();
+        static Dictionary<int,int> Defaults = new Dictionary<int, int>();
+        static int MapId;
+        static string SoundPath;
 
 
         static Dictionary<string, int> mapIdOffset = new Dictionary<string, int>
@@ -132,7 +132,7 @@ namespace Controls_Randomizer
                 FF8Process = ff8Game;
 
                 // Set our combined list
-                allControls = buttons[GameVersion].Concat(directions[GameVersion]).ToList();
+                AllControls = buttons[GameVersion].Concat(directions[GameVersion]).ToList();
 
                 // Update status
                 InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = GameVersion + " - Waiting for start button.");
@@ -238,8 +238,8 @@ namespace Controls_Randomizer
         private void myprc_Exited(object sender, EventArgs e)
         {
             // Kill the timer if it exists already
-            if (t != null)
-                t.Dispose();
+            if (T != null)
+                T.Dispose();
 
             // Disable start button
             InvokeControlAction<Button>(btnStart, btn => btn.Enabled = false);
@@ -258,7 +258,7 @@ namespace Controls_Randomizer
             string textbtn;
             string textstatus;
 
-            if(t == null)
+            if(T == null)
             {
                 controlsEnabled = false;
                 textbtn = "Stop";
@@ -271,17 +271,17 @@ namespace Controls_Randomizer
 
                 if (!radioMap.Checked)
                 {
-                    t = new Timer(DoRando, fullRando, 0, (int)numTimer.Value * 1000);
+                    T = new Timer(DoRando, fullRando, 0, (int)numTimer.Value * 1000);
                 }
                 else
                 {
-                    t = new Timer(DoRandoMapChange, fullRando, 0, 500);
+                    T = new Timer(DoRandoMapChange, fullRando, 0, 500);
                 }
             }
             else
             {
-                t.Dispose();
-                t = null;
+                T.Dispose();
+                T = null;
                 controlsEnabled = true;
                 textbtn = "Start";
                 textstatus =  GameVersion + " - Click Start to begin randomizing.";
@@ -305,10 +305,10 @@ namespace Controls_Randomizer
             var offset = mapIdOffset[GameVersion];
             int thisMap = ReadMemoryAddress(offset, 2);
 
-            if(thisMap != mapId)
+            if(thisMap != MapId)
             {
                 // Map changed; randomize.
-                mapId = thisMap;
+                MapId = thisMap;
                 DoRando(fullRando);
             }
         }
@@ -318,7 +318,7 @@ namespace Controls_Randomizer
 
             if(full)
             {
-                RandomizeControls(allControls);
+                RandomizeControls(AllControls);
             }
             else
             {
@@ -363,7 +363,7 @@ namespace Controls_Randomizer
                 {
                     try
                     {
-                        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(soundPath);
+                        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(SoundPath);
                         snd.Play();                        
                     }
                     catch
@@ -375,24 +375,24 @@ namespace Controls_Randomizer
         }
         private void SaveDefaults()
         {
-            defaults.Clear();
+            Defaults.Clear();
 
             // Read all the values
-            foreach (var offset in allControls)
+            foreach (var offset in AllControls)
             {
                 int mem = ReadMemoryAddress(offset, 1);
-                defaults.Add(offset, mem);
+                Defaults.Add(offset, mem);
             }
         }
         private void RestoreDefaults()
         {
-            if(allControls.Count > 0)
+            if(AllControls.Count > 0)
             {
                 // Write all values
                 int i = 0;
-                foreach (var offset in allControls)
+                foreach (var offset in AllControls)
                 {
-                    WriteMemoryAddress(offset, defaults[offset]);
+                    WriteMemoryAddress(offset, Defaults[offset]);
                     i++;
                 }
             }
@@ -428,7 +428,7 @@ namespace Controls_Randomizer
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    soundPath = dialog.FileName;
+                    SoundPath = dialog.FileName;
                 }
                 checkKaivel.Visible = true;
             }
