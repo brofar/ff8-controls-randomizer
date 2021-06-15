@@ -241,17 +241,13 @@ namespace Controls_Randomizer
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            bool boolrando;
-            bool booltimer;
-            bool boolmapid;
+            bool controlsEnabled;
             string textbtn;
             string textstatus;
 
             if(t == null)
             {
-                boolrando = false;
-                booltimer = false;
-                boolmapid = false;
+                controlsEnabled = false;
                 textbtn = "Stop";
                 textstatus = "Randomizing.Click Stop to restore default controls.";
 
@@ -260,7 +256,7 @@ namespace Controls_Randomizer
                 // Save the current control scheme
                 SaveDefaults();
 
-                if (!checkMapChange.Checked)
+                if (!radioMap.Checked)
                 {
                     t = new Timer(DoRando, fullRando, 0, (int)numTimer.Value * 1000);
                 }
@@ -273,9 +269,7 @@ namespace Controls_Randomizer
             {
                 t.Dispose();
                 t = null;
-                boolrando = true;
-                booltimer = true;
-                boolmapid = true;
+                controlsEnabled = true;
                 textbtn = "Start";
                 textstatus =  GameVersion + " - Click Start to begin randomizing.";
 
@@ -285,9 +279,12 @@ namespace Controls_Randomizer
 
             InvokeControlAction<Button>(btnStart, btn => btn.Text = textbtn);
             InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = textstatus);
-            InvokeControlAction<CheckBox>(checkFullRandom, chk => chk.Enabled = boolrando);
-            InvokeControlAction<CheckBox>(checkMapChange, chk => chk.Enabled = boolmapid);
-            InvokeControlAction<NumericUpDown>(numTimer, num => num.Enabled = booltimer);
+            InvokeControlAction<CheckBox>(checkFullRandom, chk => chk.Enabled = controlsEnabled);
+            InvokeControlAction<CheckBox>(checkRngSound, chk => chk.Enabled = controlsEnabled);
+            InvokeControlAction<CheckBox>(checkKaivel, chk => chk.Enabled = controlsEnabled);
+            InvokeControlAction<RadioButton>(radioMap, rad => rad.Enabled = controlsEnabled);
+            InvokeControlAction<RadioButton>(radioTimer, rad => rad.Enabled = controlsEnabled);
+            InvokeControlAction<NumericUpDown>(numTimer, num => num.Enabled = controlsEnabled);
         }
         private void DoRandoMapChange(Object fullRando)
         {
@@ -339,6 +336,21 @@ namespace Controls_Randomizer
                 WriteMemoryAddress(offset, controls[i]);
                 i++;
             }
+
+            // If the user wants to play a sound, play it now.
+            if(checkRngSound.Checked)
+            {
+                if (checkKaivel.Checked)
+                {
+                    System.IO.Stream str = Properties.Resources.wut;
+                    System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
+                    snd.Play();
+                }
+                else
+                {
+                    System.Media.SystemSounds.Asterisk.Play();
+                }
+            }
         }
         private void SaveDefaults()
         {
@@ -373,16 +385,27 @@ namespace Controls_Randomizer
             }
             catch { }
         }
-
-        private void checkMapChange_CheckedChanged(object sender, EventArgs e)
+        private void radio_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkMapChange.Checked)
+            if (radioMap.Checked)
             {
                 numTimer.Enabled = false;
             }
             else
             {
                 numTimer.Enabled = true;
+            }
+        }
+
+        private void checkRngSound_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkRngSound.Checked)
+            {
+                checkKaivel.Visible = true;
+            }
+            else
+            {
+                checkKaivel.Visible = false;
             }
         }
     }

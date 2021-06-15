@@ -35,7 +35,11 @@ namespace Controls_Randomizer
             this.label1 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.numTimer = new System.Windows.Forms.NumericUpDown();
-            this.checkMapChange = new System.Windows.Forms.CheckBox();
+            this.radioTimer = new System.Windows.Forms.RadioButton();
+            this.radioMap = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.checkRngSound = new System.Windows.Forms.CheckBox();
+            this.checkKaivel = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numTimer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,7 +57,7 @@ namespace Controls_Randomizer
             // checkFullRandom
             // 
             this.checkFullRandom.AutoSize = true;
-            this.checkFullRandom.Location = new System.Drawing.Point(12, 30);
+            this.checkFullRandom.Location = new System.Drawing.Point(12, 25);
             this.checkFullRandom.Name = "checkFullRandom";
             this.checkFullRandom.Size = new System.Drawing.Size(85, 17);
             this.checkFullRandom.TabIndex = 3;
@@ -63,7 +67,7 @@ namespace Controls_Randomizer
             // btnStart
             // 
             this.btnStart.Enabled = false;
-            this.btnStart.Location = new System.Drawing.Point(12, 72);
+            this.btnStart.Location = new System.Drawing.Point(12, 80);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(281, 25);
             this.btnStart.TabIndex = 5;
@@ -74,7 +78,7 @@ namespace Controls_Randomizer
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(182, 31);
+            this.label1.Location = new System.Drawing.Point(182, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 13);
             this.label1.TabIndex = 6;
@@ -82,16 +86,16 @@ namespace Controls_Randomizer
             // 
             // lblStatus
             // 
-            this.lblStatus.Location = new System.Drawing.Point(12, 98);
+            this.lblStatus.Location = new System.Drawing.Point(12, 108);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(281, 28);
+            this.lblStatus.Size = new System.Drawing.Size(281, 18);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Waiting for game...";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // numTimer
             // 
-            this.numTimer.Location = new System.Drawing.Point(250, 29);
+            this.numTimer.Location = new System.Drawing.Point(250, 24);
             this.numTimer.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -111,23 +115,71 @@ namespace Controls_Randomizer
             0,
             0});
             // 
-            // checkMapChange
+            // radioTimer
             // 
-            this.checkMapChange.AutoSize = true;
-            this.checkMapChange.Location = new System.Drawing.Point(12, 49);
-            this.checkMapChange.Name = "checkMapChange";
-            this.checkMapChange.Size = new System.Drawing.Size(230, 17);
-            this.checkMapChange.TabIndex = 8;
-            this.checkMapChange.Text = "Randomize on map change instead of timer";
-            this.checkMapChange.UseVisualStyleBackColor = true;
-            this.checkMapChange.CheckedChanged += new System.EventHandler(this.checkMapChange_CheckedChanged);
+            this.radioTimer.AutoSize = true;
+            this.radioTimer.Checked = true;
+            this.radioTimer.Location = new System.Drawing.Point(90, 42);
+            this.radioTimer.Name = "radioTimer";
+            this.radioTimer.Size = new System.Drawing.Size(51, 17);
+            this.radioTimer.TabIndex = 9;
+            this.radioTimer.TabStop = true;
+            this.radioTimer.Text = "Timer";
+            this.radioTimer.UseVisualStyleBackColor = true;
+            this.radioTimer.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            // 
+            // radioMap
+            // 
+            this.radioMap.AutoSize = true;
+            this.radioMap.Location = new System.Drawing.Point(147, 42);
+            this.radioMap.Name = "radioMap";
+            this.radioMap.Size = new System.Drawing.Size(86, 17);
+            this.radioMap.TabIndex = 10;
+            this.radioMap.Text = "Map Change";
+            this.radioMap.UseVisualStyleBackColor = true;
+            this.radioMap.CheckedChanged += new System.EventHandler(this.radio_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 44);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(75, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Randomize on";
+            // 
+            // checkRngSound
+            // 
+            this.checkRngSound.AutoSize = true;
+            this.checkRngSound.Location = new System.Drawing.Point(12, 61);
+            this.checkRngSound.Name = "checkRngSound";
+            this.checkRngSound.Size = new System.Drawing.Size(109, 17);
+            this.checkRngSound.TabIndex = 12;
+            this.checkRngSound.Text = "Audio Notification";
+            this.checkRngSound.UseVisualStyleBackColor = true;
+            this.checkRngSound.CheckedChanged += new System.EventHandler(this.checkRngSound_CheckedChanged);
+            // 
+            // checkKaivel
+            // 
+            this.checkKaivel.AutoSize = true;
+            this.checkKaivel.Location = new System.Drawing.Point(124, 61);
+            this.checkKaivel.Name = "checkKaivel";
+            this.checkKaivel.Size = new System.Drawing.Size(55, 17);
+            this.checkKaivel.TabIndex = 13;
+            this.checkKaivel.Text = "Kaivel";
+            this.checkKaivel.UseVisualStyleBackColor = true;
+            this.checkKaivel.Visible = false;
             // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(305, 135);
-            this.Controls.Add(this.checkMapChange);
+            this.Controls.Add(this.checkKaivel);
+            this.Controls.Add(this.checkRngSound);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.radioMap);
+            this.Controls.Add(this.radioTimer);
             this.Controls.Add(this.numTimer);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStart);
@@ -155,7 +207,11 @@ namespace Controls_Randomizer
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.NumericUpDown numTimer;
-        private System.Windows.Forms.CheckBox checkMapChange;
+        private System.Windows.Forms.RadioButton radioTimer;
+        private System.Windows.Forms.RadioButton radioMap;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkRngSound;
+        private System.Windows.Forms.CheckBox checkKaivel;
     }
 }
 
