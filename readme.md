@@ -1,5 +1,8 @@
 ﻿# Controls Randomizer
 
+Non-Remaster Steam version!
+
+
 Randomizes controller controls while playing FF8 by reading and shuffling the control mapping in the game's memory while you play.
 Does not affect keyboard controls/mapping.
 
