@@ -22,7 +22,7 @@ FF8 (Steam) stores the controller map in memory. These addresses are changed by 
 The addresses are as follows:
 
 |Offset (EN)|Length|Description|
-|----|----|----|----|
+|----|----|----|
 |FF8_EN.exe+18D0228|1 byte|L2|
 |FF8_EN.exe+18D0229|1 byte|R2|
 |FF8_EN.exe+18D022A|1 byte|L1|
