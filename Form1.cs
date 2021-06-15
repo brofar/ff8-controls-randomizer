@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using Timer = System.Threading.Timer;
 
 namespace Controls_Randomizer
@@ -20,7 +21,7 @@ namespace Controls_Randomizer
         static List<int> AllControls = new List<int>();
         static Dictionary<int,int> Defaults = new Dictionary<int, int>();
         static int MapId;
-        static string SoundPath;
+        static MediaPlayer SoundPlayer;
 
 
         static Dictionary<string, int> mapIdOffset = new Dictionary<string, int>
@@ -115,38 +116,27 @@ namespace Controls_Randomizer
         }
         private async void DetectGame()
         {
-            try
-            {
+            // Find the FF8 process.
+            Process ff8Game = await Task.Run(FindGame);
 
-                // Find the FF8 process.
-                Process ff8Game = await Task.Run(FindGame);
+            // Get the language from the process name (i.e. remove "FF8_" from the name)
+            GameVersion = ff8Game.ProcessName.Substring(4);
+            GameBaseAddress = ff8Game.MainModule.BaseAddress;
 
-                // Get the language from the process name (i.e. remove "FF8_" from the name)
-                GameVersion = ff8Game.ProcessName.Substring(4);
-                GameBaseAddress = ff8Game.MainModule.BaseAddress;
+            // Add event handler for exited process
+            ff8Game.EnableRaisingEvents = true;
+            ff8Game.Exited += new EventHandler(myprc_Exited);
 
-                // Add event handler for exited process
-                ff8Game.EnableRaisingEvents = true;
-                ff8Game.Exited += new EventHandler(myprc_Exited);
+            FF8Process = ff8Game;
 
-                FF8Process = ff8Game;
+            // Set our combined list
+            AllControls = buttons[GameVersion].Concat(directions[GameVersion]).ToList();
 
-                // Set our combined list
-                AllControls = buttons[GameVersion].Concat(directions[GameVersion]).ToList();
+            // Update status
+            InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = GameVersion + " - Waiting for start button.");
 
-                // Update status
-                InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = GameVersion + " - Waiting for start button.");
-
-                // Make the start button clickable
-                InvokeControlAction<Button>(btnStart, btn => btn.Enabled = true);
-            }
-            catch
-            {
-                // Something happened and we couldn't find the game.
-                // Crashes on Kaivel's PC
-                System.Threading.Thread.Sleep(1000);
-                DetectGame();
-            }
+            // Make the start button clickable
+            InvokeControlAction<Button>(btnStart, btn => btn.Enabled = true);
         }
 
         private Process FindGame()
@@ -155,8 +145,8 @@ namespace Controls_Randomizer
             do
             {
                 processes = Process.GetProcesses()
-                .Where(x => (x.ProcessName.StartsWith("FF8_", StringComparison.OrdinalIgnoreCase))
-                            && !(x.ProcessName.Equals("FF8_Launcher", StringComparison.OrdinalIgnoreCase)))
+                .Where(x => (x.ProcessName.StartsWith("FF8_EN", StringComparison.OrdinalIgnoreCase))
+                    || (x.ProcessName.StartsWith("FF8_FR", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
 
                 // Sleep for 1 sec before checking again to limit CPU usage.
@@ -262,7 +252,7 @@ namespace Controls_Randomizer
             {
                 controlsEnabled = false;
                 textbtn = "Stop";
-                textstatus = "Randomizing.Click Stop to restore default controls.";
+                textstatus = "Randomizing.";
 
                 bool fullRando = checkFullRandom.Checked;
 
@@ -286,6 +276,9 @@ namespace Controls_Randomizer
                 textbtn = "Start";
                 textstatus =  GameVersion + " - Click Start to begin randomizing.";
 
+                // Reset the counter
+                InvokeControlAction<Label>(lblCount, lbl => lbl.Text = "0");
+
                 // Restore control scheme
                 RestoreDefaults();
             }
@@ -294,7 +287,6 @@ namespace Controls_Randomizer
             InvokeControlAction<Label>(lblStatus, lbl => lbl.Text = textstatus);
             InvokeControlAction<CheckBox>(checkFullRandom, chk => chk.Enabled = controlsEnabled);
             InvokeControlAction<CheckBox>(checkRngSound, chk => chk.Enabled = controlsEnabled);
-            InvokeControlAction<CheckBox>(checkKaivel, chk => chk.Enabled = controlsEnabled);
             InvokeControlAction<RadioButton>(radioMap, rad => rad.Enabled = controlsEnabled);
             InvokeControlAction<RadioButton>(radioTimer, rad => rad.Enabled = controlsEnabled);
             InvokeControlAction<NumericUpDown>(numTimer, num => num.Enabled = controlsEnabled);
@@ -326,6 +318,9 @@ namespace Controls_Randomizer
                 RandomizeControls(buttons[GameVersion]);
                 RandomizeControls(directions[GameVersion]);
             }
+
+            // Update counter
+            InvokeControlAction<Label>(lblCount, lbl => lbl.Text = (int.Parse(lbl.Text)+1).ToString());
         }
 
         private void RandomizeControls(List<int> offsets)
@@ -353,26 +348,17 @@ namespace Controls_Randomizer
             // If the user wants to play a sound, play it now.
             if(checkRngSound.Checked)
             {
-                if (checkKaivel.Checked)
+                try
                 {
-                    System.IO.Stream str = Properties.Resources.wut;
-                    System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-                    snd.Play();
+                    SoundPlayer.Play();
                 }
-                else
+                catch
                 {
-                    try
-                    {
-                        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(SoundPath);
-                        snd.Play();                        
-                    }
-                    catch
-                    {
-                        System.Media.SystemSounds.Asterisk.Play();
-                    }
+                    System.Media.SystemSounds.Asterisk.Play();
                 }
             }
         }
+
         private void SaveDefaults()
         {
             Defaults.Clear();
@@ -425,16 +411,11 @@ namespace Controls_Randomizer
                 OpenFileDialog dialog = new OpenFileDialog();
                 dialog.Filter = "Audio Files (.wav)|*.wav";
 
-
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    SoundPath = dialog.FileName;
+                    List<byte> soundBytes = new List<byte>(File.ReadAllBytes(dialog.FileName));
+                    SoundPlayer = new MediaPlayer(soundBytes.ToArray());
                 }
-                checkKaivel.Visible = true;
-            }
-            else
-            {
-                checkKaivel.Visible = false;
             }
         }
     }

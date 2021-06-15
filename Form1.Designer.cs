@@ -39,7 +39,7 @@ namespace Controls_Randomizer
             this.radioMap = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.checkRngSound = new System.Windows.Forms.CheckBox();
-            this.checkKaivel = new System.Windows.Forms.CheckBox();
+            this.lblCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numTimer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,10 +88,10 @@ namespace Controls_Randomizer
             // 
             this.lblStatus.Location = new System.Drawing.Point(12, 108);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(281, 18);
+            this.lblStatus.Size = new System.Drawing.Size(232, 18);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Waiting for game...";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // numTimer
             // 
@@ -159,23 +159,21 @@ namespace Controls_Randomizer
             this.checkRngSound.UseVisualStyleBackColor = true;
             this.checkRngSound.CheckedChanged += new System.EventHandler(this.checkRngSound_CheckedChanged);
             // 
-            // checkKaivel
+            // lblCount
             // 
-            this.checkKaivel.AutoSize = true;
-            this.checkKaivel.Location = new System.Drawing.Point(124, 61);
-            this.checkKaivel.Name = "checkKaivel";
-            this.checkKaivel.Size = new System.Drawing.Size(55, 17);
-            this.checkKaivel.TabIndex = 7;
-            this.checkKaivel.Text = "Kaivel";
-            this.checkKaivel.UseVisualStyleBackColor = true;
-            this.checkKaivel.Visible = false;
+            this.lblCount.Location = new System.Drawing.Point(250, 108);
+            this.lblCount.Name = "lblCount";
+            this.lblCount.Size = new System.Drawing.Size(43, 18);
+            this.lblCount.TabIndex = 12;
+            this.lblCount.Text = "0";
+            this.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(305, 135);
-            this.Controls.Add(this.checkKaivel);
+            this.Controls.Add(this.lblCount);
             this.Controls.Add(this.checkRngSound);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.radioMap);
@@ -211,7 +209,7 @@ namespace Controls_Randomizer
         private System.Windows.Forms.RadioButton radioMap;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkRngSound;
-        private System.Windows.Forms.CheckBox checkKaivel;
+        private System.Windows.Forms.Label lblCount;
     }
 }
 
